@@ -2,6 +2,12 @@
 
 English | [中文](./CHANGELOG.zh.md)
 
+## 1.48.2 - 2026-03-06
+
+### Features
+- `baoyu-translate`: add figurative language & emotional fidelity review steps to refined workflow critique and revision stages
+- `baoyu-translate`: enhance quick mode to enforce meaning-first translation principles for figurative language
+
 ## 1.48.1 - 2026-03-05
 
 ### Features
