@@ -2,6 +2,12 @@
 
 English | [中文](./CHANGELOG.zh.md)
 
+## 1.47.0 - 2026-03-05
+
+### Features
+- Add `baoyu-translate` skill — three-mode translation (quick/normal/refined) with custom glossaries, audience-aware translation, and parallel chunked translation for long documents
+- Add cross-platform PowerShell support for EXTEND.md preference checks across all skills
+
 ## 1.46.0 - 2026-03-05
 
 ### Features
