@@ -2,6 +2,11 @@
 
 English | [中文](./CHANGELOG.zh.md)
 
+## 1.69.1 - 2026-03-16
+
+### Fixes
+- `baoyu-chrome-cdp`: tighten chrome auto-connect logic to reduce false positives
+
 ## 1.69.0 - 2026-03-16
 
 ### Features
