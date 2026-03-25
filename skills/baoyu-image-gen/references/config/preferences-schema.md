@@ -11,7 +11,7 @@ description: EXTEND.md YAML schema for baoyu-image-gen user preferences
 ---
 version: 1
 
-default_provider: null      # google|openai|azure|openrouter|dashscope|replicate|null (null = auto-detect)
+default_provider: null      # google|openai|azure|openrouter|dashscope|minimax|replicate|null (null = auto-detect)
 
 default_quality: null       # normal|2k|null (null = use default: 2k)
 
@@ -25,6 +25,7 @@ default_model:
   azure: null               # Azure deployment name, e.g., "gpt-image-1.5" or "image-prod"
   openrouter: null          # e.g., "google/gemini-3.1-flash-image-preview"
   dashscope: null           # e.g., "qwen-image-2.0-pro"
+  minimax: null             # e.g., "image-01"
   replicate: null           # e.g., "google/nano-banana-pro"
 
 batch:
@@ -48,6 +49,9 @@ batch:
     dashscope:
       concurrency: 3
       start_interval_ms: 1100
+    minimax:
+      concurrency: 3
+      start_interval_ms: 1100
 ---
 ```
 
@@ -65,6 +69,7 @@ batch:
 | `default_model.azure` | string\|null | null | Azure default deployment name |
 | `default_model.openrouter` | string\|null | null | OpenRouter default model |
 | `default_model.dashscope` | string\|null | null | DashScope default model |
+| `default_model.minimax` | string\|null | null | MiniMax default model |
 | `default_model.replicate` | string\|null | null | Replicate default model |
 | `batch.max_workers` | int\|null | 10 | Batch worker cap |
 | `batch.provider_limits.<provider>.concurrency` | int\|null | provider default | Max simultaneous requests per provider |
@@ -95,6 +100,7 @@ default_model:
   azure: "gpt-image-1.5"
   openrouter: "google/gemini-3.1-flash-image-preview"
   dashscope: "qwen-image-2.0-pro"
+  minimax: "image-01"
   replicate: "google/nano-banana-pro"
 batch:
   max_workers: 10
@@ -106,6 +112,9 @@ batch:
       concurrency: 3
       start_interval_ms: 1100
     openrouter:
+      concurrency: 3
+      start_interval_ms: 1100
+    minimax:
       concurrency: 3
       start_interval_ms: 1100
 ---

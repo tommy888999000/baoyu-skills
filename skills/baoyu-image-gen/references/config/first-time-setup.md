@@ -53,6 +53,8 @@ options:
     description: "Router for Gemini/FLUX/OpenAI-compatible image models"
   - label: "DashScope"
     description: "Alibaba Cloud - Qwen-Image, strong Chinese/English text rendering"
+  - label: "MiniMax"
+    description: "MiniMax image generation with subject-reference character workflows"
   - label: "Replicate"
     description: "Community models - nano-banana-pro, flexible model selection"
 ```
@@ -103,6 +105,20 @@ options:
     description: "Previous GPT Image deployment name"
 ```
 
+### Question 2d: Default MiniMax Model
+
+Only show if user selected MiniMax.
+
+```yaml
+header: "MiniMax Model"
+question: "Default MiniMax image generation model?"
+options:
+  - label: "image-01 (Recommended)"
+    description: "Best default, supports aspect ratios and custom width/height"
+  - label: "image-01-live"
+    description: "Faster variant, use aspect ratio instead of custom size"
+```
+
 ### Question 3: Default Quality
 
 ```yaml
@@ -149,6 +165,7 @@ default_model:
   azure: [selected azure deployment or null]
   openrouter: [selected openrouter model or null]
   dashscope: null
+  minimax: [selected minimax model or null]
   replicate: null
 ---
 ```
@@ -252,6 +269,24 @@ options:
     description: "Google's base image model on Replicate"
 ```
 
+### MiniMax Model Selection
+
+```yaml
+header: "MiniMax Model"
+question: "Choose a default MiniMax image generation model?"
+options:
+  - label: "image-01 (Recommended)"
+    description: "Best general-purpose MiniMax image model with custom width/height support"
+  - label: "image-01-live"
+    description: "Lower-latency MiniMax image model using aspect ratios"
+```
+
+Notes for MiniMax setup:
+
+- `image-01` is the safest default. It supports official `aspect_ratio` values and documented custom `width` / `height` output sizes.
+- `image-01-live` is useful when the user prefers faster generation and can work with aspect-ratio-based sizing.
+- MiniMax subject reference currently uses `subject_reference[].type = character`; docs recommend front-facing portrait references in JPG/JPEG/PNG under 10MB.
+
 ### Update EXTEND.md
 
 After user selects a model:
@@ -267,6 +302,7 @@ default_model:
   azure: [value or null]
   openrouter: [value or null]
   dashscope: [value or null]
+  minimax: [value or null]
   replicate: [value or null]
 ```
 

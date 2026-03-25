@@ -663,7 +663,7 @@ AI 驱动的生成后端。
 
 #### baoyu-image-gen
 
-基于 AI SDK 的图像生成，支持 OpenAI、Azure OpenAI、Google、OpenRouter、DashScope（阿里通义万相）、即梦（Jimeng）、豆包（Seedream）和 Replicate API。支持文生图、参考图、宽高比和质量预设。
+基于 AI SDK 的图像生成，支持 OpenAI、Azure OpenAI、Google、OpenRouter、DashScope（阿里通义万相）、MiniMax、即梦（Jimeng）、豆包（Seedream）和 Replicate API。支持文生图、参考图、宽高比、自定义尺寸、批量生成和质量预设。
 
 ```bash
 # 基础生成（自动检测服务商）
@@ -684,8 +684,20 @@ AI 驱动的生成后端。
 # OpenRouter
 /baoyu-image-gen --prompt "一只猫" --image cat.png --provider openrouter
 
+# OpenRouter + 参考图
+/baoyu-image-gen --prompt "把它变成蓝色" --image out.png --provider openrouter --model google/gemini-3.1-flash-image-preview --ref source.png
+
 # DashScope（阿里通义万相）
 /baoyu-image-gen --prompt "一只可爱的猫" --image cat.png --provider dashscope
+
+# DashScope 自定义尺寸
+/baoyu-image-gen --prompt "为咖啡品牌设计一张 21:9 横幅海报，包含清晰中文标题" --image banner.png --provider dashscope --model qwen-image-2.0-pro --size 2048x872
+
+# MiniMax
+/baoyu-image-gen --prompt "A fashion editorial portrait by a bright studio window" --image out.jpg --provider minimax
+
+# MiniMax + 角色参考图
+/baoyu-image-gen --prompt "A girl stands by the library window, cinematic lighting" --image out.jpg --provider minimax --model image-01 --ref portrait.png --ar 16:9
 
 # Replicate
 /baoyu-image-gen --prompt "一只猫" --image cat.png --provider replicate
@@ -696,8 +708,11 @@ AI 驱动的生成后端。
 # 豆包（Seedream）
 /baoyu-image-gen --prompt "一只可爱的猫" --image cat.png --provider seedream
 
-# 带参考图（Google、OpenAI、Azure OpenAI、OpenRouter、Replicate 或 Seedream 5.0/4.5/4.0）
+# 带参考图（Google、OpenAI、Azure OpenAI、OpenRouter、Replicate、MiniMax 或 Seedream 5.0/4.5/4.0）
 /baoyu-image-gen --prompt "把它变成蓝色" --image out.png --ref source.png
+
+# 批量模式
+/baoyu-image-gen --batchfile batch.json --jobs 4 --json
 ```
 
 **选项**：
@@ -706,44 +721,73 @@ AI 驱动的生成后端。
 | `--prompt`, `-p` | 提示词文本 |
 | `--promptfiles` | 从文件读取提示词（多文件拼接） |
 | `--image` | 输出图片路径（必需） |
-| `--provider` | `google`、`openai`、`openrouter`、`dashscope`、`jimeng`、`seedream` 或 `replicate`（默认：自动检测，优先 google） |
-| `--model`, `-m` | 模型 ID |
+| `--batchfile` | 多图批量生成的 JSON 文件 |
+| `--jobs` | 批量模式的并发 worker 数 |
+| `--provider` | `google`、`openai`、`azure`、`openrouter`、`dashscope`、`minimax`、`jimeng`、`seedream` 或 `replicate` |
+| `--model`, `-m` | 模型 ID 或部署名。Azure 使用部署名；OpenRouter 使用完整模型 ID；MiniMax 使用 `image-01` / `image-01-live` |
 | `--ar` | 宽高比（如 `16:9`、`1:1`、`4:3`） |
 | `--size` | 尺寸（如 `1024x1024`） |
 | `--quality` | `normal` 或 `2k`（默认：`2k`） |
-| `--ref` | 参考图片（Google、OpenAI、OpenRouter、Replicate 或 Seedream 5.0/4.5/4.0） |
+| `--imageSize` | Google/OpenRouter 使用的 `1K`、`2K`、`4K` |
+| `--ref` | 参考图片（Google、OpenAI、Azure OpenAI、OpenRouter、Replicate、MiniMax 或 Seedream 5.0/4.5/4.0） |
+| `--n` | 单次请求生成图片数量 |
+| `--json` | 输出 JSON 结果 |
 
 **环境变量**（配置方法见[环境配置](#环境配置)）：
 | 变量 | 说明 | 默认值 |
 |------|------|--------|
 | `OPENAI_API_KEY` | OpenAI API 密钥 | - |
+| `AZURE_OPENAI_API_KEY` | Azure OpenAI API 密钥 | - |
 | `OPENROUTER_API_KEY` | OpenRouter API 密钥 | - |
 | `GOOGLE_API_KEY` | Google API 密钥 | - |
+| `GEMINI_API_KEY` | `GOOGLE_API_KEY` 的别名 | - |
 | `DASHSCOPE_API_KEY` | DashScope API 密钥（阿里云） | - |
+| `MINIMAX_API_KEY` | MiniMax API 密钥 | - |
 | `REPLICATE_API_TOKEN` | Replicate API Token | - |
 | `JIMENG_ACCESS_KEY_ID` | 即梦火山引擎 Access Key | - |
 | `JIMENG_SECRET_ACCESS_KEY` | 即梦火山引擎 Secret Key | - |
 | `ARK_API_KEY` | 豆包火山引擎 ARK API 密钥 | - |
 | `OPENAI_IMAGE_MODEL` | OpenAI 模型 | `gpt-image-1.5` |
+| `AZURE_OPENAI_DEPLOYMENT` | Azure 默认部署名 | - |
+| `AZURE_OPENAI_IMAGE_MODEL` | 兼容旧配置的 Azure 部署/模型别名 | `gpt-image-1.5` |
 | `OPENROUTER_IMAGE_MODEL` | OpenRouter 模型 | `google/gemini-3.1-flash-image-preview` |
 | `GOOGLE_IMAGE_MODEL` | Google 模型 | `gemini-3-pro-image-preview` |
 | `DASHSCOPE_IMAGE_MODEL` | DashScope 模型 | `qwen-image-2.0-pro` |
+| `MINIMAX_IMAGE_MODEL` | MiniMax 模型 | `image-01` |
 | `REPLICATE_IMAGE_MODEL` | Replicate 模型 | `google/nano-banana-pro` |
 | `JIMENG_IMAGE_MODEL` | 即梦模型 | `jimeng_t2i_v40` |
 | `SEEDREAM_IMAGE_MODEL` | 豆包模型 | `doubao-seedream-5-0-260128` |
 | `OPENAI_BASE_URL` | 自定义 OpenAI 端点 | - |
+| `OPENAI_IMAGE_USE_CHAT` | OpenAI 改走 `/chat/completions` | `false` |
+| `AZURE_OPENAI_BASE_URL` | Azure 资源或部署端点 | - |
+| `AZURE_API_VERSION` | Azure 图像 API 版本 | `2025-04-01-preview` |
 | `OPENROUTER_BASE_URL` | 自定义 OpenRouter 端点 | `https://openrouter.ai/api/v1` |
+| `OPENROUTER_HTTP_REFERER` | OpenRouter 归因用站点 URL | - |
+| `OPENROUTER_TITLE` | OpenRouter 归因用应用名 | - |
 | `GOOGLE_BASE_URL` | 自定义 Google 端点 | - |
 | `DASHSCOPE_BASE_URL` | 自定义 DashScope 端点 | - |
+| `MINIMAX_BASE_URL` | 自定义 MiniMax 端点 | `https://api.minimax.io` |
 | `REPLICATE_BASE_URL` | 自定义 Replicate 端点 | - |
 | `JIMENG_BASE_URL` | 自定义即梦端点 | `https://visual.volcengineapi.com` |
 | `JIMENG_REGION` | 即梦区域 | `cn-north-1` |
 | `SEEDREAM_BASE_URL` | 自定义豆包端点 | `https://ark.cn-beijing.volces.com/api/v3` |
+| `BAOYU_IMAGE_GEN_MAX_WORKERS` | 批量模式最大 worker 数 | `10` |
+| `BAOYU_IMAGE_GEN_<PROVIDER>_CONCURRENCY` | 覆盖 provider 并发数 | provider 默认值 |
+| `BAOYU_IMAGE_GEN_<PROVIDER>_START_INTERVAL_MS` | 覆盖 provider 请求启动间隔 | provider 默认值 |
+
+**Provider 说明**：
+- Azure OpenAI：`--model` 表示 Azure deployment name，不是底层模型家族名。
+- DashScope：`qwen-image-2.0-pro` 是自定义 `--size`、`21:9` 和中英文排版的推荐默认模型。
+- MiniMax：`image-01` 支持官方文档里的自定义 `width` / `height`；`image-01-live` 更偏低延迟，适合配合 `--ar` 使用。
+- MiniMax 参考图会走 `subject_reference`，当前能力更偏角色 / 人像一致性。
+- 即梦不支持参考图。
+- 豆包参考图能力仅适用于 Seedream 5.0 / 4.5 / 4.0，不适用于 Seedream 3.0。
 
 **服务商自动选择**：
 1. 如果指定了 `--provider` → 使用指定的
-2. 如果只有一个 API 密钥 → 使用对应服务商
-3. 如果多个可用 → 默认使用 Google
+2. 如果传了 `--ref` 且未指定 provider → 依次尝试 Google、OpenAI、Azure、OpenRouter、Replicate、Seedream，最后是 MiniMax
+3. 如果只有一个 API 密钥 → 使用对应服务商
+4. 如果多个可用 → 默认使用 Google
 
 #### baoyu-danger-gemini-web
 
@@ -1018,11 +1062,20 @@ cat > ~/.baoyu-skills/.env << 'EOF'
 OPENAI_API_KEY=sk-xxx
 OPENAI_IMAGE_MODEL=gpt-image-1.5
 # OPENAI_BASE_URL=https://api.openai.com/v1
+# OPENAI_IMAGE_USE_CHAT=false
+
+# Azure OpenAI
+AZURE_OPENAI_API_KEY=xxx
+AZURE_OPENAI_BASE_URL=https://your-resource.openai.azure.com
+AZURE_OPENAI_DEPLOYMENT=gpt-image-1.5
+# AZURE_API_VERSION=2025-04-01-preview
 
 # OpenRouter
 OPENROUTER_API_KEY=sk-or-xxx
 OPENROUTER_IMAGE_MODEL=google/gemini-3.1-flash-image-preview
 # OPENROUTER_BASE_URL=https://openrouter.ai/api/v1
+# OPENROUTER_HTTP_REFERER=https://your-app.example.com
+# OPENROUTER_TITLE=你的应用名
 
 # Google
 GOOGLE_API_KEY=xxx
@@ -1033,6 +1086,11 @@ GOOGLE_IMAGE_MODEL=gemini-3-pro-image-preview
 DASHSCOPE_API_KEY=sk-xxx
 DASHSCOPE_IMAGE_MODEL=qwen-image-2.0-pro
 # DASHSCOPE_BASE_URL=https://dashscope.aliyuncs.com/api/v1
+
+# MiniMax
+MINIMAX_API_KEY=xxx
+MINIMAX_IMAGE_MODEL=image-01
+# MINIMAX_BASE_URL=https://api.minimax.io
 
 # Replicate
 REPLICATE_API_TOKEN=r8_xxx
