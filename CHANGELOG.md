@@ -2,6 +2,18 @@
 
 English | [中文](./CHANGELOG.zh.md)
 
+## 1.88.0 - 2026-03-27
+
+### Features
+- `baoyu-fetch`: new URL reader CLI package with Chrome CDP and site-specific adapters (X/Twitter, YouTube, Hacker News, generic)
+
+### Refactor
+- `baoyu-url-to-markdown`: replace custom CDP/converter pipeline with `baoyu-fetch` CLI
+- `shared-skill-packages`: add `package.json` `files` allowlist support and filter test files, changelogs, and `.changeset` dirs during vendor sync
+
+### Fixes
+- `baoyu-md`: rename test image paths from `images/` to `imgs/`
+
 ## 1.87.2 - 2026-03-26
 
 ### Refactor

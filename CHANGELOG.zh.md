@@ -2,6 +2,18 @@
 
 [English](./CHANGELOG.md) | 中文
 
+## 1.88.0 - 2026-03-27
+
+### 新功能
+- `baoyu-fetch`：新增 URL 阅读器 CLI 包，支持 Chrome CDP 和站点适配器（X/Twitter、YouTube、Hacker News、通用页面）
+
+### 重构
+- `baoyu-url-to-markdown`：用 `baoyu-fetch` CLI 替换自定义 CDP/转换管道
+- `shared-skill-packages`：支持 `package.json` 的 `files` 白名单，vendor 同步时过滤测试文件、CHANGELOG 和 `.changeset` 目录
+
+### 修复
+- `baoyu-md`：修正测试中图片路径 `images/` 为 `imgs/`
+
 ## 1.87.2 - 2026-03-26
 
 ### 重构
