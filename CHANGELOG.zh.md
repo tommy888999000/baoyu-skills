@@ -2,6 +2,27 @@
 
 [English](./CHANGELOG.md) | 中文
 
+## 1.89.0 - 2026-03-31
+
+### 新功能
+- `baoyu-fetch`：新增 X 会话 Cookie 旁路文件，跨运行持久化登录状态；通过 Browser.close 优雅关闭 Chrome；自动检测并清理过期的 Chrome 配置锁文件
+- `baoyu-article-illustrator`：新增暖色调矢量插画配色方案，含 `warm-knowledge` 预设
+- `baoyu-post-to-x`：新增登录后 X 会话持久化、Chrome 锁文件恢复和优雅关闭
+
+### 文档
+- `baoyu-post-to-weibo`：新增发帖类型自动选择规则，优化 CDP Chrome 终止指令
+
+### 重构
+- `baoyu-danger-gemini-web`：使用优雅 Chrome 关闭替代强制终止
+- `baoyu-danger-x-to-markdown`：使用优雅 Chrome 关闭替代强制终止
+
+### 修复
+- 同步 npm lockfile 及修复根目录 Node 测试
+
+### 维护
+- `baoyu-url-to-markdown`：同步 vendor baoyu-fetch 的会话和生命周期改进
+- 更新 bun.lock 文件
+
 ## 1.88.0 - 2026-03-27
 
 ### 新功能

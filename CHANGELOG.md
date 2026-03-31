@@ -2,6 +2,27 @@
 
 English | [中文](./CHANGELOG.zh.md)
 
+## 1.89.0 - 2026-03-31
+
+### Features
+- `baoyu-fetch`: add X session cookie sidecar to persist login across runs, graceful Chrome shutdown via Browser.close, and stale profile lock auto-recovery
+- `baoyu-article-illustrator`: add warm palette variant for vector-illustration style with new `warm-knowledge` preset
+- `baoyu-post-to-x`: add X session persistence after login, Chrome lock recovery, and graceful shutdown
+
+### Documentation
+- `baoyu-post-to-weibo`: add post type auto-selection rules and safer CDP kill instructions
+
+### Refactor
+- `baoyu-danger-gemini-web`: use graceful Chrome shutdown instead of hard kill
+- `baoyu-danger-x-to-markdown`: use graceful Chrome shutdown instead of hard kill
+
+### Fixes
+- Sync npm lockfile and root node tests
+
+### Maintenance
+- `baoyu-url-to-markdown`: sync vendor baoyu-fetch with session and lifecycle changes
+- Update bun.lock files
+
 ## 1.88.0 - 2026-03-27
 
 ### Features
