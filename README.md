@@ -116,6 +116,10 @@ Xiaohongshu (RedNote) infographic series generator. Breaks down content into 1-1
 
 # Direct content input
 /baoyu-xhs-images 今日星座运势
+
+# Non-interactive (skip all confirmations, for scheduled tasks)
+/baoyu-xhs-images posts/ai-future/article.md --yes
+/baoyu-xhs-images posts/ai-future/article.md --yes --preset knowledge-card
 ```
 
 **Styles** (visual aesthetics): `cute` (default), `fresh`, `warm`, `bold`, `minimal`, `retro`, `pop`, `notion`, `chalkboard`

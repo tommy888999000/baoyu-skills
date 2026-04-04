@@ -116,6 +116,10 @@ clawhub install baoyu-markdown-to-html
 
 # 直接输入内容
 /baoyu-xhs-images 今日星座运势
+
+# 非交互模式（跳过所有确认，适用于定时任务）
+/baoyu-xhs-images posts/ai-future/article.md --yes
+/baoyu-xhs-images posts/ai-future/article.md --yes --preset knowledge-card
 ```
 
 **风格**（视觉美学）：`cute`（默认）、`fresh`、`warm`、`bold`、`minimal`、`retro`、`pop`、`notion`、`chalkboard`
